@@ -17,7 +17,7 @@ defineOptions({
   name: 'ArticlePage'
 })
 
-const { push, getRoutes } = useRouter()
+const { push } = useRouter()
 
 const ids = ref<string[]>([])
 
@@ -251,8 +251,6 @@ const crudSchemas = reactive<CrudSchema[]>([
 const { allSchemas } = useCrudSchemas(crudSchemas)
 
 const AddAction = () => {
-  const routes = getRoutes()
-  console.log(routes)
   push('/article/article-add')
 }
 

@@ -130,6 +130,7 @@
   },
   "exampleDemo": {
     "add": "新增",
+    "addThumbnail": "点击上传",
     "articleSource": "文章来源",
     "articleSource1": "原创",
     "articleSource2": "转载",
@@ -153,6 +154,7 @@
     "state1": "草稿",
     "state2": "已发布",
     "state3": "回收站",
+    "thumbnail": "缩略图",
     "title": "标题"
   },
   "formDemo": {
@@ -343,6 +345,7 @@
   "router": {
     "PicturePreview": "表格图片预览",
     "analysis": "分析页",
+    "article": "文章",
     "authorization": "权限管理",
     "cardTable": "卡片表格",
     "component": "组件",
@@ -358,7 +361,6 @@
     "echart": "图表",
     "editor": "编辑器",
     "errorPage": "错误页面",
-    "article": "文章",
     "exampleAdd": "文章 - 新增",
     "exampleDetail": "文章 - 详情",
     "exampleDialog": "文章 - 弹窗",

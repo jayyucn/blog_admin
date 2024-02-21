@@ -20,6 +20,7 @@ const request = async (option: AxiosConfig) => {
 }
 
 const http = {
+  request: request,
   get: async <T = any>(option: AxiosConfig) => {
     return await (request({ method: 'get', ...option }) as Promise<IResponse<T>>)
   },

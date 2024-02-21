@@ -1,11 +1,15 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch } from 'vue'
+import { PropType, reactive, ref, watch } from 'vue'
 import { TableData } from '@/api/table/types'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useValidator } from '@/hooks/web/useValidator'
 import { IDomEditor } from '@wangeditor/editor'
+import { UploadComponentProps } from '@/components/Form/src/types'
+import API from '@/api'
+import { computed } from 'vue'
+import { ElButton, ElMessage, ElText, UploadRawFile, UploadRequestOptions } from 'element-plus'
 
 const { required } = useValidator()
 
@@ -21,6 +25,11 @@ const { t } = useI18n()
 const { formRegister, formMethods } = useForm()
 const { setValues, getFormData, getElFormExpose, setSchema } = formMethods
 
+const imageUrl = ref('')
+const thumbnailUrl = computed(() => {
+  return imageUrl
+})
+
 const schema = reactive<FormSchema[]>([
   {
     field: 'title',
@@ -34,12 +43,61 @@ const schema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'author',
-    label: t('exampleDemo.author'),
+    field: 'thumbnail',
     component: 'Input',
+    //hidden: true,
+    value: thumbnailUrl
+  },
+  {
+    field: 'thumbnailUpload',
+    label: t('exampleDemo.thumbnail'),
+    component: 'Upload',
     formItemProps: {
       rules: [required()]
+    },
+    componentProps: {
+      httpRequest: async (data: any) => {
+        const result = await API.Common.postStaticApi({
+          file: data.file.arrayBuffer(),
+          name: data.file.name
+        })
+        imageUrl.value = result.url
+      },
+      showFileList: false,
+      // onSuccess: (_response) => {
+      //   imageUrl.value = _response
+      // },
+      beforeUpload: (rawFile: UploadRawFile) => {
+        if (rawFile.type !== 'image/jpeg') {
+          ElMessage.error('Avatar picture must be JPG format!')
+          return false
+        } else if (rawFile.size / 1024 / 1024 > 2) {
+          ElMessage.error('Avatar picture size can not exceed 2MB!')
+          return false
+        }
+        // API.Common.postStaticApi({ file: rawFile.arrayBuffer(), name: rawFile.name })
+        return true
+      },
+      slots: {
+        default: () => (
+          <>
+            {imageUrl.value ? <img src={imageUrl.value} class="avatar" /> : null}
+            {!imageUrl.value ? (
+              <ElButton type="primary">{t('exampleDemo.addThumbnail')}</ElButton>
+            ) : null}
+            {imageUrl.value ? <ElText>{imageUrl.value}</ElText> : null}
+          </>
+        )
+      }
+    } as UploadComponentProps,
+    colProps: {
+      span: 24
     }
+  },
+  {
+    field: 'author',
+    label: t('exampleDemo.author'),
+    component: 'Input'
   },
   {
     field: 'state',
@@ -129,7 +187,8 @@ const schema = reactive<FormSchema[]>([
           value: 1
         }
       ]
-    }
+    },
+    value: 1
   },
   {
     field: 'pageviews',
@@ -148,7 +207,6 @@ const schema = reactive<FormSchema[]>([
     },
     componentProps: {
       defaultHtml: '',
-      // @ts-ignore
       onChange: (edit: IDomEditor) => {
         setValues({
           content: edit.getHtml()

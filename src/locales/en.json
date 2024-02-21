@@ -130,6 +130,7 @@
   },
   "exampleDemo": {
     "add": "Add",
+    "addThumbnail": "Click to upload",
     "articleSource": "Article Source",
     "articleSource1": "Original",
     "articleSource2": "Reprint",
@@ -153,6 +154,7 @@
     "state1": "Draft",
     "state2": "Published",
     "state3": "Recycled",
+    "thumbnail": "thumbnail",
     "title": "Title"
   },
   "formDemo": {
@@ -343,6 +345,7 @@
   "router": {
     "PicturePreview": "Table Image Preview",
     "analysis": "Analysis",
+    "article": "Article",
     "authorization": "Authorization",
     "cardTable": "Card table",
     "component": "Component",
@@ -358,7 +361,6 @@
     "echart": "Echart",
     "editor": "Editor",
     "errorPage": "Error page",
-    "article": "Article",
     "exampleAdd": "Article page - add",
     "exampleDetail": "Article page - detail",
     "exampleDialog": "Article dialog",

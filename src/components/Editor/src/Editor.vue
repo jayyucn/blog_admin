@@ -6,6 +6,8 @@ import { propTypes } from '@/utils/propTypes'
 import { isNumber } from '@/utils/is'
 import { ElMessage } from 'element-plus'
 import { useLocaleStore } from '@/store/modules/locale'
+import { useUserStoreWithOut } from '@/store/modules/user'
+import { PATH_URL } from '@/config'
 
 const localeStore = useLocaleStore()
 
@@ -55,6 +57,7 @@ const handleCreated = (editor: IDomEditor) => {
 
 // 编辑器配置
 const editorConfig = computed((): IEditorConfig => {
+  const userStore = useUserStoreWithOut()
   return Object.assign(
     {
       readOnly: false,
@@ -81,7 +84,21 @@ const editorConfig = computed((): IEditorConfig => {
       scroll: true,
       uploadImgShowBase64: true
     },
-    props.editorConfig || {}
+    props.editorConfig || {
+      MENU_CONF: {
+        uploadImage: {
+          server: PATH_URL + '/static/upload',
+          headers: { Authorization: `Bearer ${userStore.getToken}` },
+          'tenant-id': '1',
+          fieldName: 'file',
+          customInsert(res, insertFn) {
+            if (res.code == 0) {
+              insertFn(res.data, null, res.data)
+            }
+          }
+        }
+      }
+    }
   )
 })
 

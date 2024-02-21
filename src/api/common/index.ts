@@ -1,11 +1,44 @@
-import request from '@/http'
+import http from '@/http'
 
 // 获取所有字典
 export const getDictApi = () => {
-  return request.get({ url: '/mock/dict/list' })
+  return http.get({ url: '/mock/dict/list' })
 }
 
 // 模拟获取某个字典
 export const getDictOneApi = async () => {
-  return request.get({ url: '/mock/dict/one' })
+  return http.get({ url: '/mock/dict/one' })
+}
+
+export async function postStaticApi(options: {
+  file: File
+  name: string
+  onProgress?: (progress: number) => void
+}) {
+  const param = new FormData()
+  param.append('file', options.file)
+  param.append('name', options.name)
+  return http
+    .post<{
+      url: string
+      key: string
+      size: number
+    }>({
+      url: '/static/upload',
+      data: param,
+      responseType: 'blob'
+      // params: {
+      //   onUploadProgress: ({ loaded, total }) => {
+      //     if (isNumber(total)) {
+      //       const progress = (loaded / total) * 100
+      //       options.onProgress?.(progress)
+      //     }
+      //   }
+      // }
+    })
+    .then((response) => response.result)
+}
+
+export const Common = {
+  postStaticApi
 }

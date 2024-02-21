@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 import qs from 'qs'
-import { PATH_URL, TRANSFORM_REQUEST_DATA } from './config'
+import { TRANSFORM_REQUEST_DATA } from './config'
 import { ResponseStatus, RequestConfig } from './types'
 import { useUserStoreWithOut } from '@/store/modules/user'
+import { PATH_URL } from '@/config'
 
 const abortControllerMap: Map<string, AbortController> = new Map()
 let baseUrl = PATH_URL
