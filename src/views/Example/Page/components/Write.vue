@@ -9,7 +9,7 @@ import { IDomEditor } from '@wangeditor/editor'
 import { UploadComponentProps } from '@/components/Form/src/types'
 import API from '@/api'
 import { computed } from 'vue'
-import { ElButton, ElMessage, ElText, UploadRawFile, UploadRequestOptions } from 'element-plus'
+import { ElButton, ElMessage, ElText, UploadRawFile } from 'element-plus'
 
 const { required } = useValidator()
 
@@ -259,8 +259,17 @@ watch(
 defineExpose({
   submit
 })
+
+const onRestore = () => {
+  API.Common.restoreMongodb()
+}
+const onDump = () => {
+  API.Common.dumpMongodb()
+}
 </script>
 
 <template>
+  <ElButton @click="onDump">备份mongodb</ElButton>
+  <ElButton @click="onRestore">同步备份</ElButton>
   <Form :rules="rules" @register="formRegister" :schema="schema" />
 </template>

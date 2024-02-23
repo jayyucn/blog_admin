@@ -10,6 +10,14 @@ export const getDictOneApi = async () => {
   return http.get({ url: '/mock/dict/one' })
 }
 
+export const dumpMongodb = async () => {
+  return http.get({ url: '/backup/dump' })
+}
+
+export const restoreMongodb = async () => {
+  return http.get({ url: '/backup/restore' })
+}
+
 export async function postStaticApi(options: {
   file: File
   name: string
@@ -40,5 +48,7 @@ export async function postStaticApi(options: {
 }
 
 export const Common = {
+  dumpMongodb: dumpMongodb,
+  restoreMongodb: restoreMongodb,
   postStaticApi
 }
