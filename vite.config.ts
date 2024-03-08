@@ -13,6 +13,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
 import UnoCSS from 'unocss/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
+import prismjs from 'vite-plugin-prismjs'
 
 // https://vitejs.dev/config/
 const root = process.cwd()
@@ -37,6 +38,36 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           // 开启defineModel
           defineModel: true
         }
+      }),
+      prismjs({
+        languages: [
+          'html',
+          'batch',
+          'c',
+          'cpp',
+          'cmake',
+          'csharp',
+          'css',
+          'git',
+          'glsl',
+          'go',
+          'hlsl',
+          'http',
+          'ini',
+          'javascript',
+          'jsdoc',
+          'json',
+          'less',
+          'markdown',
+          'mongodb',
+          'protobuf',
+          'python',
+          'rust',
+          'sass',
+          'scss',
+          'sql',
+          'typescript'
+        ]
       }),
       VueJsx(),
       progress(),

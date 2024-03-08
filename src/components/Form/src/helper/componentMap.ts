@@ -22,6 +22,7 @@ import {
 } from 'element-plus'
 import { InputPassword } from '@/components/InputPassword'
 import { Editor } from '@/components/Editor'
+import { MarkdownEditor } from '@/components/MarkdownEditor'
 import { JsonEditor } from '@/components/JsonEditor'
 import { IconPicker } from '@/components/IconPicker'
 import { ComponentName } from '../types'
@@ -48,6 +49,7 @@ const componentMap: Recordable<Component, ComponentName> = {
   SelectV2: ElSelectV2,
   InputPassword: InputPassword,
   Editor: Editor,
+  MarkdownEditor: MarkdownEditor,
   TreeSelect: ElTreeSelect,
   Upload: ElUpload,
   JsonEditor: JsonEditor,

@@ -36,9 +36,30 @@ import App from './App.vue'
 
 import './permission'
 
+import VueMarkdownEditor from '@kangc/v-md-editor'
+import '@kangc/v-md-editor/lib/style/base-editor.css'
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
+import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
+import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index'
+import Prism from 'prismjs'
+import createMermaidPlugin from '@kangc/v-md-editor/lib/plugins/mermaid/cdn'
+import '@kangc/v-md-editor/lib/plugins/mermaid/mermaid.css'
+import createTodoListPlugin from '@kangc/v-md-editor/lib/plugins/todo-list/index'
+import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css'
+
 // 创建实例
 const setupAll = async () => {
   const app = createApp(App)
+  VueMarkdownEditor.use(vuepressTheme, {
+    Prism,
+    codeHighlightExtensionMap: {
+      vue: 'html'
+    }
+  })
+  VueMarkdownEditor.use(createMermaidPlugin())
+  VueMarkdownEditor.use(createTodoListPlugin())
+  VueMarkdownEditor.use(createLineNumbertPlugin())
+  app.use(VueMarkdownEditor)
 
   await setupI18n(app)
 

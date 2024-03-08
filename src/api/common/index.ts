@@ -23,9 +23,10 @@ export async function postStaticApi(options: {
   name: string
   onProgress?: (progress: number) => void
 }) {
-  const param = new FormData()
-  param.append('file', options.file)
-  param.append('name', options.name)
+  const data = {
+    file: options.file,
+    name: options.name
+  }
   return http
     .post<{
       url: string
@@ -33,8 +34,9 @@ export async function postStaticApi(options: {
       size: number
     }>({
       url: '/static/upload',
-      data: param,
-      responseType: 'blob'
+      data: data,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      responseType: 'json'
       // params: {
       //   onUploadProgress: ({ loaded, total }) => {
       //     if (isNumber(total)) {
@@ -44,7 +46,9 @@ export async function postStaticApi(options: {
       //   }
       // }
     })
-    .then((response) => response.result)
+    .then((response) => {
+      return response.result
+    })
 }
 
 export const Common = {

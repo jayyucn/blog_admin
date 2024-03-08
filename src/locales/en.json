@@ -154,6 +154,7 @@
     "state1": "Draft",
     "state2": "Published",
     "state3": "Recycled",
+    "subtitle": "subtitle",
     "thumbnail": "thumbnail",
     "title": "Title"
   },

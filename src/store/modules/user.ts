@@ -12,6 +12,7 @@ interface UserState {
   tokenKey: string
   token: string
   expiresIn: number
+  birthTime: number
   roleRouters?: string[] | AppCustomRouteRecordRaw[]
   rememberMe: boolean
   loginInfo?: UserLoginType
@@ -24,6 +25,7 @@ export const useUserStore = defineStore('user', {
       tokenKey: 'Authorization',
       token: '',
       expiresIn: 3600,
+      birthTime: Date.now() / 1000,
       roleRouters: undefined,
       // 记住我
       rememberMe: true,
@@ -36,6 +38,13 @@ export const useUserStore = defineStore('user', {
     },
     getToken(): string {
       return this.token
+    },
+    getTokenCountdown(): number {
+      const expiresIn = this.expiresIn
+      const borthTime = this.birthTime
+      const deadLine = borthTime + expiresIn
+      const now = +new Date() / 1000
+      return deadLine > now ? Math.floor(deadLine - now) : 0
     },
     getUserInfo(): UserType | undefined {
       return this.userInfo
@@ -72,7 +81,9 @@ export const useUserStore = defineStore('user', {
         type: 'warning'
       })
         .then(async () => {
-          const res = await API.login.loginOutApi().catch(() => {})
+          const res = await API.login.loginOutApi().catch(() => {
+            this.reset()
+          })
           if (res) {
             this.reset()
           }

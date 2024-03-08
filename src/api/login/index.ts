@@ -1,13 +1,21 @@
-import type { UserLoginToken, UserType } from './types'
 import http from '../../http'
+import type { UserLoginToken, UserType } from './types'
 
 interface RoleParams {
   roleName: string
 }
 
+export interface TokenResult {
+  access_token: string
+  expires_in: number
+}
+
 const loginApi = (data: UserType): Promise<IResponse<UserLoginToken>> => {
-  // return request.post({ url: '/mock/user/login', data })
   return http.post<UserLoginToken>({ url: '/auth/login', data })
+}
+
+const refreshToken = (): Promise<IResponse<TokenResult>> => {
+  return http.post<TokenResult>({ url: '/auth/refresh' })
 }
 
 const loginOutApi = (): Promise<IResponse> => {
@@ -38,6 +46,7 @@ const getTestRoleApi = (params: RoleParams): Promise<IResponse<string[]>> => {
 
 export const Login = {
   loginApi,
+  refreshToken,
   loginOutApi,
   getUserListApi,
   getAdminRoleApi,

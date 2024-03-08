@@ -6,8 +6,7 @@ import { propTypes } from '@/utils/propTypes'
 import { isNumber } from '@/utils/is'
 import { ElMessage } from 'element-plus'
 import { useLocaleStore } from '@/store/modules/locale'
-import { useUserStoreWithOut } from '@/store/modules/user'
-import { PATH_URL } from '@/config'
+import API from '@/api'
 
 const localeStore = useLocaleStore()
 
@@ -57,7 +56,6 @@ const handleCreated = (editor: IDomEditor) => {
 
 // 编辑器配置
 const editorConfig = computed((): IEditorConfig => {
-  const userStore = useUserStoreWithOut()
   return Object.assign(
     {
       readOnly: false,
@@ -87,14 +85,12 @@ const editorConfig = computed((): IEditorConfig => {
     props.editorConfig || {
       MENU_CONF: {
         uploadImage: {
-          server: PATH_URL + '/static/upload',
-          headers: { Authorization: `Bearer ${userStore.getToken}` },
-          'tenant-id': '1',
-          fieldName: 'file',
-          customInsert(res, insertFn) {
-            if (res.code == 0) {
-              insertFn(res.data, null, res.data)
-            }
+          async customUpload(file: File, _insertFn: any) {
+            // file 即选中的文件
+            // 自己实现上传，并得到图片 url alt href
+            const result = await API.Common.postStaticApi({ file: file, name: file.name })
+            // 最后插入图片
+            _insertFn(result.url, null, result.url)
           }
         }
       }

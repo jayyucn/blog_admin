@@ -53,6 +53,7 @@ export enum ComponentNameEnum {
   SELECT_V2 = 'SelectV2',
   INPUT_PASSWORD = 'InputPassword',
   EDITOR = 'Editor',
+  MARKDOWN_EDITOR = 'MarkdownEditor',
   TREE_SELECT = 'TreeSelect',
   UPLOAD = 'Upload',
   JSON_EDITOR = 'JsonEditor',

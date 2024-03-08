@@ -7,6 +7,8 @@ import { useWindowSize } from '@vueuse/core'
 import { useAppStore } from '@/store/modules/app'
 import { setCssVar } from '@/utils'
 import { useDesign } from '@/hooks/web/useDesign'
+import { useUserStore, useUserStoreWithOut } from '@/store/modules/user'
+import API from '@/api'
 
 const { variables } = useDesign()
 
@@ -24,6 +26,8 @@ onMounted(() => {
 })
 
 const { width } = useWindowSize()
+
+const userStore = useUserStoreWithOut()
 
 // 监听窗口变化
 watch(
@@ -43,6 +47,41 @@ watch(
     immediate: true
   }
 )
+
+watch(
+  () => userStore.getToken,
+  (token: string) => {
+    if (token) {
+      runRenewalToken()
+    } else {
+      stopRenewalToken()
+    }
+  }
+)
+let renewalTimer: null | number = null
+
+// 停止 Token 续约
+const stopRenewalToken = (): void => {
+  if (typeof renewalTimer === 'number') {
+    window.clearTimeout(renewalTimer)
+  }
+}
+API.login.refreshToken()
+// 自动续约 Token
+const runRenewalToken = (): void => {
+  stopRenewalToken()
+  const userStore = useUserStore()
+  const countdown = userStore.getTokenCountdown
+  const seconds = countdown - 10
+  console.info(`Token 自动续约正在工作，Token 将在 ${seconds}s 后自动更新！`)
+  renewalTimer = window.setTimeout(() => {
+    API.login.refreshToken().then((res) => {
+      const { access_token, expires_in } = res.result
+      userStore.setToken(access_token, expires_in)
+      runRenewalToken()
+    })
+  }, seconds * 1000)
+}
 
 // 多语言相关
 const localeStore = useLocaleStore()

@@ -1,14 +1,22 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import { PATH_URL } from '@/config'
+import { useUserStoreWithOut } from '@/store/modules/user'
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  HttpStatusCode,
+  InternalAxiosRequestConfig
+} from 'axios'
 import { ElMessage } from 'element-plus'
 import qs from 'qs'
 import { TRANSFORM_REQUEST_DATA } from './config'
-import { ResponseStatus, RequestConfig } from './types'
-import { useUserStoreWithOut } from '@/store/modules/user'
-import { PATH_URL } from '@/config'
+import { RequestConfig, ResponseStatus } from './types'
 
 const abortControllerMap: Map<string, AbortController> = new Map()
 let baseUrl = PATH_URL
-baseUrl.startsWith('http://') ? baseUrl : (baseUrl = 'http://' + baseUrl)
+baseUrl.startsWith('http://') || baseUrl.startsWith('https://')
+  ? baseUrl
+  : (baseUrl = 'http://' + baseUrl)
 const axiosInstance: AxiosInstance = axios.create({
   timeout: 600000, // REQUEST_TIMEOUT,
   baseURL: baseUrl
@@ -30,7 +38,11 @@ axiosInstance.interceptors.response.use(
     return res
   },
   (error: AxiosError<AxiosResponse>) => {
-    ElMessage.error((<any>error?.response?.data)?.message || '请求失败')
+    if (error?.response?.status == HttpStatusCode.Unauthorized) {
+      ElMessage.error('您的登录授权已过期，请重新登录。')
+    } else {
+      ElMessage.error((<any>error?.response?.data)?.error || '请求失败')
+    }
     // ElMessage.error(error.message)
     return Promise.reject(error)
   }
