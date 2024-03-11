@@ -32,3 +32,17 @@ export const DEFAULT_FILTER_COLUMN = ['expand', 'selection']
  * 是否根据headers->content-type自动转换数据格式
  */
 export const TRANSFORM_REQUEST_DATA = true
+
+export interface GeneralKeyValue {
+  name: string
+  value: string
+}
+
+export interface IPLocation {
+  country?: string
+  country_code?: string
+  region?: string
+  region_code?: string
+  city?: string
+  zip?: string
+}

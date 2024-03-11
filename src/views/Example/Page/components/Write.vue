@@ -9,6 +9,7 @@ import { UploadComponentProps } from '@/components/Form/src/types'
 import API from '@/api'
 import { computed } from 'vue'
 import { ElButton, ElMessage, ElText, UploadRawFile } from 'element-plus'
+import { CategoryTree } from '@/constants/constant.category'
 
 const { required } = useValidator()
 
@@ -37,24 +38,42 @@ const schema = reactive<FormSchema[]>([
       rules: [required()]
     },
     colProps: {
-      span: 24
+      span: 12
     }
   },
   {
-    field: 'subtitle',
+    field: 'categories',
+    label: t('exampleDemo.category'),
+    component: 'Category',
+    componentProps: {
+      onCheckChange: (trees: CategoryTree[]) => {
+        console.log('---oncheck', trees)
+        setValues({
+          categories: trees
+        })
+      },
+      showCheckbox: true
+    },
+    formItemProps: {},
+    colProps: {
+      span: 12
+    }
+  },
+  {
+    field: 'description',
     label: t('exampleDemo.subtitle'),
     component: 'Input',
     formItemProps: {
       rules: [required()]
     },
     colProps: {
-      span: 24
+      span: 12
     }
   },
   {
     field: 'thumbnail',
     component: 'Input',
-    //hidden: true,
+    hidden: true,
     value: thumbnailUrl
   },
   {
@@ -112,12 +131,12 @@ const schema = reactive<FormSchema[]>([
     },
     componentProps: {
       options: [
-        { label: t('exampleDemo.state1'), value: '0' },
-        { label: t('exampleDemo.state2'), value: '1' },
-        { label: t('exampleDemo.state3'), value: '-1' }
+        { label: t('exampleDemo.state1'), value: 0 },
+        { label: t('exampleDemo.state2'), value: 1 },
+        { label: t('exampleDemo.state3'), value: -1 }
       ]
     },
-    value: '1'
+    value: 1
   },
   {
     field: 'public',
@@ -128,12 +147,12 @@ const schema = reactive<FormSchema[]>([
     },
     componentProps: {
       options: [
-        { label: t('exampleDemo.public1'), value: '1' },
-        { label: t('exampleDemo.public2'), value: '-1' },
-        { label: t('exampleDemo.public3'), value: '0' }
+        { label: t('exampleDemo.public1'), value: 1 },
+        { label: t('exampleDemo.public2'), value: -1 },
+        { label: t('exampleDemo.public3'), value: 0 }
       ]
     },
-    value: '1'
+    value: 1
   },
   {
     field: 'featured',
@@ -150,12 +169,12 @@ const schema = reactive<FormSchema[]>([
     },
     componentProps: {
       options: [
-        { label: t('exampleDemo.articleSource1'), value: '0' },
-        { label: t('exampleDemo.articleSource2'), value: '1' },
-        { label: t('exampleDemo.articleSource3'), value: '2' }
+        { label: t('exampleDemo.articleSource1'), value: 0 },
+        { label: t('exampleDemo.articleSource2'), value: 1 },
+        { label: t('exampleDemo.articleSource3'), value: 2 }
       ]
     },
-    value: '0'
+    value: 0
   },
   {
     field: 'update_at',
@@ -239,7 +258,7 @@ const schema = reactive<FormSchema[]>([
 
 const rules = reactive({
   title: [required()],
-  subtitle: [required()],
+  description: [required()],
   thumbnail: [required()],
   importance: [required()],
   pageviews: [required()],
@@ -280,17 +299,8 @@ watch(
 defineExpose({
   submit
 })
-
-const onRestore = () => {
-  API.Common.restoreMongodb()
-}
-const onDump = () => {
-  API.Common.dumpMongodb()
-}
 </script>
 
 <template>
-  <ElButton @click="onDump">备份mongodb</ElButton>
-  <ElButton @click="onRestore">同步备份</ElButton>
   <Form :rules="rules" @register="formRegister" :schema="schema" />
 </template>

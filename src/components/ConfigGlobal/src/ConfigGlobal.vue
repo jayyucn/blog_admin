@@ -66,7 +66,15 @@ const stopRenewalToken = (): void => {
     window.clearTimeout(renewalTimer)
   }
 }
-API.login.refreshToken()
+
+function refreshToken() {
+  API.login.refreshToken().then((res) => {
+    const { access_token, expires_in } = res.result
+    userStore.setToken(access_token, expires_in)
+  })
+}
+
+refreshToken()
 // 自动续约 Token
 const runRenewalToken = (): void => {
   stopRenewalToken()
@@ -75,11 +83,7 @@ const runRenewalToken = (): void => {
   const seconds = countdown - 10
   console.info(`Token 自动续约正在工作，Token 将在 ${seconds}s 后自动更新！`)
   renewalTimer = window.setTimeout(() => {
-    API.login.refreshToken().then((res) => {
-      const { access_token, expires_in } = res.result
-      userStore.setToken(access_token, expires_in)
-      runRenewalToken()
-    })
+    refreshToken()
   }, seconds * 1000)
 }
 

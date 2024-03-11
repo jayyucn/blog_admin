@@ -55,6 +55,7 @@ export enum ComponentNameEnum {
   EDITOR = 'Editor',
   MARKDOWN_EDITOR = 'MarkdownEditor',
   TREE_SELECT = 'TreeSelect',
+  CATEGORY = 'Category',
   UPLOAD = 'Upload',
   JSON_EDITOR = 'JsonEditor',
   ICON_PICKER = 'IconPicker'
