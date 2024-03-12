@@ -27,6 +27,7 @@ import { JsonEditor } from '@/components/JsonEditor'
 import { IconPicker } from '@/components/IconPicker'
 import { ComponentName } from '../types'
 import Category from '@/views/Example/Page/Category.vue'
+import Tags from '../../../../views/Example/Page/Tags.vue'
 
 const componentMap: Recordable<Component, ComponentName> = {
   RadioGroup: ElRadioGroup,
@@ -55,7 +56,8 @@ const componentMap: Recordable<Component, ComponentName> = {
   Category: Category,
   Upload: ElUpload,
   JsonEditor: JsonEditor,
-  IconPicker: IconPicker
+  IconPicker: IconPicker,
+  Tags: Tags
 }
 
 export { componentMap }

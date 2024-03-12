@@ -8,3 +8,17 @@ export interface GeneralPaginateQueryParams extends GeneralQueryParams {
   page?: number
   page_size?: number
 }
+
+/** 数据体结构 */
+export interface ResponsePaginationData<T> {
+  data: T[]
+  pagination?: Pagination
+}
+
+/** 翻页参数 */
+export interface Pagination {
+  current_page: number
+  total_page: number
+  per_page: number
+  total: number
+}

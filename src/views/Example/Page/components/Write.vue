@@ -10,6 +10,7 @@ import API from '@/api'
 import { computed } from 'vue'
 import { ElButton, ElMessage, ElText, UploadRawFile } from 'element-plus'
 import { CategoryTree } from '@/constants/constant.category'
+import { Tag } from '@/api/tags'
 
 const { required } = useValidator()
 
@@ -47,7 +48,6 @@ const schema = reactive<FormSchema[]>([
     component: 'Category',
     componentProps: {
       onCheckChange: (trees: CategoryTree[]) => {
-        console.log('---oncheck', trees)
         setValues({
           categories: trees
         })
@@ -55,6 +55,21 @@ const schema = reactive<FormSchema[]>([
       showCheckbox: true
     },
     formItemProps: {},
+    colProps: {
+      span: 12
+    }
+  },
+  {
+    field: 'tags',
+    label: t('exampleDemo.tags'),
+    component: 'Tags',
+    componentProps: {
+      onTagsChange: (tags: Tag[]) => {
+        setValues({
+          tags: tags
+        })
+      }
+    },
     colProps: {
       span: 12
     }
