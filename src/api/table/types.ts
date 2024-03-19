@@ -28,6 +28,8 @@ export type TableData = {
   origin: OriginState
   featured: boolean
   author: string
+  categories: any[]
+  tags: any[]
   importance: number
   created_at: string
   updated_at: string

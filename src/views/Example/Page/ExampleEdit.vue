@@ -4,13 +4,13 @@ import { ContentDetailWrap } from '@/components/ContentDetailWrap'
 import { ref, unref } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useRouter, useRoute } from 'vue-router'
-import { saveTableApi, getTableDetApi } from '@/api/table'
+import { getTableDetApi, updateArticleApi } from '@/api/table'
 import { TableData } from '@/api/table/types'
 import { useEventBus } from '@/hooks/event/useEventBus'
 
 const { emit } = useEventBus()
 
-const { push, go } = useRouter()
+const { replace, go, push } = useRouter()
 
 const { query } = useRoute()
 
@@ -36,21 +36,21 @@ const save = async () => {
   const formData = await write?.submit()
   if (formData) {
     loading.value = true
-    const res = await saveTableApi(formData)
+    const res = await updateArticleApi(formData)
       .catch(() => {})
       .finally(() => {
         loading.value = false
       })
     if (res) {
       emit('getList', 'editor')
-      push('/example/example-page')
+      replace('/article/article-list')
     }
   }
 }
 </script>
 
 <template>
-  <ContentDetailWrap :title="t('exampleDemo.edit')" @back="push('/example/example-page')">
+  <ContentDetailWrap :title="t('exampleDemo.edit')" @back="push('/article/article-list')">
     <Write ref="writeRef" :current-row="currentRow" />
 
     <template #header>

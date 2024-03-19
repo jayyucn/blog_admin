@@ -77,7 +77,7 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'importance',
-    label: t('tableDemo.importance'),
+    label: t('tableDemo.categories'),
     search: {
       hidden: true
     },
@@ -117,7 +117,7 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'content',
-    label: t('exampleDemo.content'),
+    label: t('exampleDemo.description'),
     search: {
       hidden: true
     },

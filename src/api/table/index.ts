@@ -1,7 +1,5 @@
 import request from '@/http'
 import type { TableData } from './types'
-import { GeneralPaginateQueryParams } from '../Interface'
-import { CategoryResult } from '@/constants/constant.category'
 
 export const getArticleListApi = (params: any) => {
   return request.get({ url: '/article', params })
@@ -19,16 +17,14 @@ export const saveTableApi = (data: Partial<TableData>): Promise<IResponse> => {
   return request.post({ url: '/article', data })
 }
 
+export const updateArticleApi = (data: Partial<TableData>): Promise<IResponse> => {
+  return request.put({ url: '/article', data })
+}
+
 export const getTableDetApi = (id: string): Promise<IResponse<TableData>> => {
   return request.get({ url: `/article/${id}` })
 }
 
 export const delTableListApi = (ids: string[] | number[]): Promise<IResponse> => {
-  return request.post({ url: '/mock/example/delete', data: { ids } })
-}
-
-export const getCategoryListApi = (
-  params: GeneralPaginateQueryParams = {}
-): Promise<IResponse<CategoryResult>> => {
-  return request.get({ url: '/category', data: { params } })
+  return request.delete({ url: '/article/', params: { ids: [...ids] } })
 }

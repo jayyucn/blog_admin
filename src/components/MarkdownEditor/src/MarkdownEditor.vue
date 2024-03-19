@@ -2,6 +2,7 @@
 import { ref, unref, watch } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import API from '@/api'
+import { Toolbar } from './CustomToolbar'
 
 const props = defineProps({
   modelValue: propTypes.string.def('')
@@ -40,13 +41,27 @@ async function handleUploadImage(_event, insertImage, files) {
     // height: 'auto',
   })
 }
+
+const toolbar = ref(Toolbar)
 </script>
 
 <template>
   <v-md-editor
     v-model="valueMarkdown"
     :disabled-menus="[]"
+    left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table | tips hr | todo-list | link image code | mermaid "
+    :toolbar="toolbar"
     @upload-image="handleUploadImage"
     height="500px"
   />
 </template>
+
+<style>
+.v-md-icon-mermaid::before {
+  content: 'Mermaid';
+}
+
+.v-md-icon-tips::before {
+  content: 'Tips';
+}
+</style>

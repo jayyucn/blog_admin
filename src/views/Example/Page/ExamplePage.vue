@@ -2,7 +2,6 @@
 import { ContentWrap } from '@/components/ContentWrap'
 import { Search } from '@/components/Search'
 import { useI18n } from '@/hooks/web/useI18n'
-import { ElTag } from 'element-plus'
 import { Table } from '@/components/Table'
 import { getArticleListApi, delTableListApi } from '@/api/table'
 import { useTable } from '@/hooks/web/useTable'
@@ -12,6 +11,8 @@ import { useRouter } from 'vue-router'
 import { useEventBus } from '@/hooks/event/useEventBus'
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import { BaseButton } from '@/components/Button'
+import dayjs from 'dayjs'
+import { ElDatePicker, ElTag } from 'element-plus'
 
 defineOptions({
   name: 'ArticlePage'
@@ -35,8 +36,18 @@ const { tableRegister, tableState, tableMethods } = useTable({
       page_size: unref(pageSize),
       ...unref(searchParams)
     })
+    let dataList = res.result.data
+    dataList = dataList.map((item) => {
+      if (item.created_at) {
+        item.created_at = dayjs(item.created_at).format('YYYY年MM月DD日HH时')
+      }
+      if (item.updated_at) {
+        // item.updated_at = dayjs(item.updated_at).format('YYYYMMDD')
+      }
+      return item
+    })
     return {
-      list: res.result.data,
+      list: dataList,
       total: res.result.pagination.total_count
     }
   },
@@ -95,102 +106,23 @@ const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'title',
     label: t('tableDemo.title'),
+    width: '100px',
     search: {
       component: 'Input'
     },
     form: {
       component: 'Input',
       colProps: {
-        span: 24
+        span: 12
       }
     },
     detail: {
-      span: 24
+      minWidth: 20
     }
   },
   {
-    field: 'author',
-    label: t('tableDemo.author'),
-    search: {
-      hidden: true
-    }
-  },
-  {
-    field: 'updated_at',
-    label: t('tableDemo.displayTime'),
-    search: {
-      hidden: true
-    },
-    form: {
-      component: 'DatePicker',
-      componentProps: {
-        type: 'datetime',
-        valueFormat: 'YYYY-MM-DD HH:mm:ss'
-      }
-    }
-  },
-  {
-    field: 'importance',
-    label: t('tableDemo.importance'),
-    search: {
-      hidden: true
-    },
-    form: {
-      component: 'Select',
-      componentProps: {
-        style: {
-          width: '100%'
-        },
-        options: [
-          {
-            label: '重要',
-            value: 3
-          },
-          {
-            label: '良好',
-            value: 2
-          },
-          {
-            label: '一般',
-            value: 1
-          }
-        ]
-      }
-    },
-    detail: {
-      slots: {
-        default: (data: any) => {
-          return (
-            <ElTag
-              type={
-                data.importance === 1 ? 'success' : data.importance === 2 ? 'warning' : 'danger'
-              }
-            >
-              {data.importance === 1
-                ? t('tableDemo.important')
-                : data.importance === 2
-                  ? t('tableDemo.good')
-                  : t('tableDemo.commonly')}
-            </ElTag>
-          )
-        }
-      }
-    }
-  },
-  {
-    field: 'pageviews',
-    label: t('tableDemo.pageviews'),
-    search: {
-      hidden: true
-    },
-    form: {
-      component: 'InputNumber',
-      value: 0
-    }
-  },
-  {
-    field: 'content',
-    label: t('exampleDemo.content'),
+    field: 'description',
+    label: t('exampleDemo.description'),
     search: {
       hidden: true
     },
@@ -198,10 +130,10 @@ const crudSchemas = reactive<CrudSchema[]>([
       show: false
     },
     form: {
-      component: 'Editor',
-      colProps: {
-        span: 24
-      }
+      component: 'Editor'
+      // colProps: {
+      //   span: 24
+      // }
     },
     detail: {
       span: 24,
@@ -210,6 +142,120 @@ const crudSchemas = reactive<CrudSchema[]>([
           return <div innerHTML={data.content}></div>
         }
       }
+    }
+  },
+  {
+    field: 'author',
+    label: t('tableDemo.author'),
+    width: '65px',
+    search: {
+      hidden: false
+    }
+  },
+  {
+    field: 'state',
+    sortable: true,
+    label: t('exampleDemo.state'),
+    width: '85px',
+    table: {
+      formatter: (row: any) => {
+        return row.state === 0 ? t('exampleDemo.state1') : t('exampleDemo.state2')
+      }
+    },
+    search: {
+      hidden: false
+    }
+  },
+  {
+    field: 'updated_at',
+    label: t('tableDemo.displayTime'),
+    width: '260px',
+    search: {
+      hidden: true
+    },
+    table: {
+      slots: {
+        default: (data: any) => {
+          return (
+            <>
+              <ElDatePicker
+                v-model={data.row.updated_at}
+                type="datetime"
+                readonly={true}
+                placeholder="Pick a date"
+              />
+            </>
+          )
+        }
+      }
+    }
+  },
+  {
+    field: 'categories',
+    label: t('tableDemo.categories'),
+    search: {
+      hidden: true
+    },
+    form: {
+      hidden: true
+    },
+    detail: {
+      hidden: true
+    },
+    table: {
+      slots: {
+        default: (data: any) => {
+          return data.row?.categories.map((item, index) => {
+            return (
+              <>
+                <ElTag type="success" key={index} class="mx-1">
+                  {item.name}
+                </ElTag>
+              </>
+            )
+          })
+        }
+      }
+    }
+  },
+  {
+    field: 'tags',
+    label: t('tableDemo.tags'),
+    search: {
+      hidden: true
+    },
+    form: {
+      hidden: true
+    },
+    detail: {
+      hidden: true
+    },
+    table: {
+      slots: {
+        default: (data: any) => {
+          return data.row?.tags.map((item, index) => {
+            return (
+              <>
+                <ElTag type="info" key={index} class="mx-1">
+                  {item.name}
+                </ElTag>
+              </>
+            )
+          })
+        }
+      }
+    }
+  },
+  {
+    field: 'meta.views',
+    label: t('tableDemo.pageviews'),
+    width: '65px',
+    search: {
+      hidden: true
+    },
+    form: {
+      component: 'InputNumber',
+      value: 0
     }
   },
   {

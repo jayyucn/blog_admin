@@ -33,7 +33,7 @@ const columns: TableColumn[] = [
   },
   {
     field: 'importance',
-    label: t('tableDemo.importance'),
+    label: t('tableDemo.categories'),
     formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
       return (
         <ElTag type={cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'}>

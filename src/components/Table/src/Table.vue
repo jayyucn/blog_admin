@@ -49,11 +49,11 @@ export default defineComponent({
     // 对齐方式
     align: propTypes.string
       .validate((v: string) => ['left', 'center', 'right'].includes(v))
-      .def('left'),
+      .def('center'),
     // 表头对齐方式
     headerAlign: propTypes.string
       .validate((v: string) => ['left', 'center', 'right'].includes(v))
-      .def('left'),
+      .def('center'),
     data: {
       type: Array as PropType<Recordable[]>,
       default: () => []
@@ -446,7 +446,7 @@ export default defineComponent({
               headerAlign={v.headerAlign || headerAlign}
               label={v.label}
               fixed={v.fixed}
-              width="65px"
+              width={v.width || '65px'}
             ></ElTableColumn>
           )
         } else if (v.type === 'selection') {
@@ -463,7 +463,6 @@ export default defineComponent({
         } else {
           const props = { ...v } as any
           if (props.children) delete props.children
-
           const children = v.children
 
           const slots = {

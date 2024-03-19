@@ -1,14 +1,6 @@
 <script lang="tsx">
 import { PropType, defineComponent, ref, computed, unref, watch, onMounted } from 'vue'
-import {
-  ElForm,
-  ElFormItem,
-  ElRow,
-  ElCol,
-  FormRules,
-  ComponentSize
-  // FormItemProp
-} from 'element-plus'
+import { ElForm, ElFormItem, ElRow, ElCol, FormRules, ComponentSize } from 'element-plus'
 import { componentMap } from './helper/componentMap'
 import { propTypes } from '@/utils/propTypes'
 import { getSlot } from '@/utils/tsxHelper'

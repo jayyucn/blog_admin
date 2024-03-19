@@ -8,7 +8,7 @@ import { useValidator } from '@/hooks/web/useValidator'
 import { UploadComponentProps } from '@/components/Form/src/types'
 import API from '@/api'
 import { computed } from 'vue'
-import { ElButton, ElMessage, ElText, UploadRawFile } from 'element-plus'
+import { ElButton, ElMessage, UploadRawFile } from 'element-plus'
 import { CategoryTree } from '@/constants/constant.category'
 import { Tag } from '@/api/tags'
 
@@ -52,6 +52,7 @@ const schema = reactive<FormSchema[]>([
           categories: trees
         })
       },
+      checkedCategories: computed(() => props.currentRow?.categories || []),
       showCheckbox: true
     },
     formItemProps: {},
@@ -64,6 +65,7 @@ const schema = reactive<FormSchema[]>([
     label: t('exampleDemo.tags'),
     component: 'Tags',
     componentProps: {
+      style: 'color=red',
       onTagsChange: (tags: Tag[]) => {
         setValues({
           tags: tags
@@ -88,7 +90,7 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'thumbnail',
     component: 'Input',
-    hidden: true,
+    hidden: false,
     value: thumbnailUrl
   },
   {
@@ -123,7 +125,7 @@ const schema = reactive<FormSchema[]>([
             {!imageUrl.value ? (
               <ElButton type="primary">{t('exampleDemo.addThumbnail')}</ElButton>
             ) : null}
-            {imageUrl.value ? <ElText>{imageUrl.value}</ElText> : null}
+            {/* {imageUrl.value ? <ElText>{imageUrl.value}</ElText> : null} */}
           </>
         )
       }
@@ -191,18 +193,18 @@ const schema = reactive<FormSchema[]>([
     },
     value: 0
   },
-  {
-    field: 'update_at',
-    label: t('exampleDemo.displayTime'),
-    component: 'DatePicker',
-    componentProps: {
-      type: 'datetime',
-      valueFormat: 'YYYY-MM-DD HH:mm:ss'
-    },
-    formItemProps: {
-      rules: [required()]
-    }
-  },
+  // {
+  //   field: 'update_at',
+  //   label: t('exampleDemo.displayTime'),
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     type: 'datetime',
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss'
+  //   },
+  //   formItemProps: {
+  //     rules: [required()]
+  //   }
+  // },
   {
     field: 'importance',
     label: t('exampleDemo.importance'),
@@ -229,15 +231,6 @@ const schema = reactive<FormSchema[]>([
     value: 1
   },
   {
-    field: 'pageviews',
-    label: t('exampleDemo.pageviews'),
-    component: 'InputNumber',
-    value: 0,
-    formItemProps: {
-      rules: [required()]
-    }
-  },
-  {
     field: 'content',
     component: 'MarkdownEditor',
     colProps: {
@@ -251,24 +244,8 @@ const schema = reactive<FormSchema[]>([
         })
       }
     },
-    label: t('exampleDemo.content')
+    label: t('exampleDemo.description')
   }
-  // {
-  //   field: 'content',
-  //   component: 'Editor',
-  //   colProps: {
-  //     span: 24
-  //   },
-  //   componentProps: {
-  //     defaultHtml: '',
-  //     onChange: (edit: IDomEditor) => {
-  //       setValues({
-  //         content: edit.getHtml()
-  //       })
-  //     }
-  //   } as EditorComponentProps,
-  //   label: t('exampleDemo.content')
-  // }
 ])
 
 const rules = reactive({
@@ -276,7 +253,6 @@ const rules = reactive({
   description: [required()],
   thumbnail: [required()],
   importance: [required()],
-  pageviews: [required()],
   display_time: [required()],
   content: [required()]
 })
@@ -317,5 +293,5 @@ defineExpose({
 </script>
 
 <template>
-  <Form :rules="rules" @register="formRegister" :schema="schema" />
+  <Form :rules="rules" @register="formRegister" :schema="schema" labelPosition="top" />
 </template>

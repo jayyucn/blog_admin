@@ -53,7 +53,7 @@ const schema = reactive<DescriptionsSchema[]>([
   },
   {
     field: 'content',
-    label: t('exampleDemo.content'),
+    label: t('exampleDemo.description'),
     span: 24,
     slots: {
       default: (data: any) => {

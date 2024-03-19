@@ -4,8 +4,9 @@ import { GeneralKeyValue } from '.'
 export interface Category {
   id?: number
   _id?: string
-  pid?: string | null
+  pid?: Object | undefined
   name: string
+  type: string
   slug: string
   description: string
   updated_at: string

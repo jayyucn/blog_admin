@@ -57,7 +57,7 @@ const setupAll = async () => {
     }
   })
   VueMarkdownEditor.use(createMermaidPlugin())
-  VueMarkdownEditor.use(createTodoListPlugin())
+  VueMarkdownEditor.use(createTodoListPlugin({ text: 'task', color: '#ffc017' }))
   VueMarkdownEditor.use(createLineNumbertPlugin())
   app.use(VueMarkdownEditor)
 

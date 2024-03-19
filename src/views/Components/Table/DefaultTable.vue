@@ -25,13 +25,13 @@ const columns: TableColumn[] = [
     label: t('tableDemo.author')
   },
   {
-    field: 'display_time',
+    field: 'updated_at',
     label: t('tableDemo.displayTime'),
     sortable: true
   },
   {
     field: 'importance',
-    label: t('tableDemo.importance'),
+    label: t('tableDemo.categories'),
     formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
       return h(
         ElTag,

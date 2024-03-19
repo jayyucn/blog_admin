@@ -9,7 +9,7 @@ import { useEventBus } from '@/hooks/event/useEventBus'
 
 const { emit } = useEventBus()
 
-const { push, go, back } = useRouter()
+const { go, back, replace } = useRouter()
 
 const { t } = useI18n()
 
@@ -29,7 +29,7 @@ const save = async () => {
       })
     if (res) {
       emit('getList', 'add')
-      push('/article/article-list')
+      replace('/article/article-list')
     }
   }
 }
