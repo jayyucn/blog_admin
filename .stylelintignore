@@ -2,5 +2,6 @@
 /public/*
 public/*
 /dist*
+/dist-pro
 /src/types/env.d.ts
 /docs/**/*
