@@ -38,10 +38,19 @@ import { Tag, createTagApi, getTagsApi } from '@/api/tags'
 import { propTypes } from '@/utils/propTypes'
 
 const props = defineProps({
+  defaultTags: propTypes.array.def([]),
   onTagsChange: propTypes.func.def(undefined)
 })
 
 const dynamicTags = ref<Tag[]>([])
+
+watch(
+  () => props.defaultTags,
+  () => {
+    dynamicTags.value = (props.defaultTags as Tag[]) || []
+  },
+  { immediate: true }
+)
 
 watch(
   () => dynamicTags.value.length,

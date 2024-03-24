@@ -11,6 +11,7 @@ import { computed } from 'vue'
 import { ElButton, ElMessage, UploadRawFile } from 'element-plus'
 import { CategoryTree } from '@/constants/constant.category'
 import { Tag } from '@/api/tags'
+import { updateArticleApi } from '@/api/table'
 
 const { required } = useValidator()
 
@@ -70,7 +71,8 @@ const schema = reactive<FormSchema[]>([
         setValues({
           tags: tags
         })
-      }
+      },
+      defaultTags: computed(() => props.currentRow?.tags || [])
     },
     colProps: {
       span: 12
@@ -286,6 +288,14 @@ watch(
     immediate: true
   }
 )
+
+/** 每隔5秒同步一次 */
+async function syncromize() {
+  const formData = await submit()
+  if (formData) {
+    updateArticleApi(formData)
+  }
+}
 
 defineExpose({
   submit
